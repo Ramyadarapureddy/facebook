@@ -9,9 +9,11 @@ class Post(models.Model):
     title = models.TextField()
     image = models.ImageField(upload_to='posts/images/',
                               blank=True,null=True)
-    likes = models.ManyToManyField(CustomUser, related_name="my_liked_post")
+    likes = models.ManyToManyField(CustomUser, related_name="my_liked_post",null=True,blank=True)
     posted_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     user = models.ForeignKey(CustomUser,related_name="my_comments",on_delete=models.CASCADE)
