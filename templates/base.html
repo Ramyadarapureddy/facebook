@@ -27,7 +27,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {% if user.is_authenticated %}
                 <li class="nav-item">
-                  <a class="text-decoration-none text-white nav-link" href="">My Posts</a>
+                  <a class="text-decoration-none text-white nav-link" href="{% url 'timeline-page' %}">Timeline</a>
                 </li>
                 <li class="nav-item">
                   <a class="text-decoration-none text-white nav-link" href="{% url 'logout-user' %}">Logout</a> 
