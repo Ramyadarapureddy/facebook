@@ -97,7 +97,67 @@
                                         </span>
                                     </span>
                                 </div>
-                                <div class="col-2">Comments</div>
+                                <div class="col-2"></div>
+                            </div>
+
+                            <!--Comments-->
+                            <div class="accordion" id="commentAccordion{{ post.id }}">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="commentsHeader{{ post.id }}">
+                                        <button 
+                                            class="accordion-button" 
+                                            type="button" 
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#commentsCollapse{{ post.id }}"
+                                            aria-controls="commentCollapse{{ post.id }}"
+                                            aria-disabled="false"
+                                        >
+                                            Comments
+                                        </button>
+                                    </h2>
+                                    <!--Target Data-->
+                                    <div id="commentsCollapse{{ post.id }}" 
+                                        class="accordion-collapse collapse"
+                                        aria-labelledby="commentsHeading{{ post.id }}"    
+                                    >
+                                    <div class="accordion-body">
+                                        <!--form-->
+                                        <form method="POST" id="commentForm{{ post.id }}" onsubmit="submitComment(event, parseInt(`{{ post.id }}`))">
+                                            <div class="mb-3">
+                                                <label for="commentText{{ post.id }}" class="form-label">
+                                                    Your Comment
+                                                </label>
+                                                <textarea 
+                                                    class="form-control" 
+                                                    id="commentText{{ post.id }}" 
+                                                    name="commentText" 
+                                                    rows="3"
+                                                ></textarea>
+                                             </div>
+                                            <div>
+                                                <button
+                                                    type="submit"
+                                                    id="submitButton{{ post.id }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    Add Comment
+                                                </button>
+                                            </div>
+                                        </form>
+                                       
+                                    </div>
+
+                                     <!--Previous Comments-->
+                                     <h6 class="text-primary my-1 m-2">Previous Comments:</h6>
+
+                                    <div id="commentContainer{{ post.id }}" class="accordion-body">
+                                        {% for comment in post.comments.all|dictsortreversed:"id" %}
+                                            <div id="comment{{ comment.id }}">
+                                                <b>{{ comment.user.username }} : </b>{{ comment.text }} ({{ comment.commeted_at|timesince }} ago)
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -198,6 +258,48 @@
             heartIcon.classList.toggle('text-danger');
         })
         .catch(error =>console.error('Error : ', error))
+    }
+
+
+
+    // Add comment
+    function submitComment(event, postId){
+        event.preventDefault();
+
+        //get the comment text
+        const form = document.getElementById(`commentForm${postId}`);
+        const commentText = document.getElementById(`commentText${postId}`).value;
+
+        var csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+        document.getElementById(`submitButton${postId}`).disabled = true
+
+        //API request
+        fetch(`http://127.0.0.1:8000/add-comment/${postId}`,{
+            method :'POST',
+            headers :{
+                'Content-Type' : 'application/json',
+                'X-CSRFToken' :csrf_token
+            },
+            body: JSON.stringify({'comment' : commentText})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            const commentsContainer = document.getElementById(`commentContainer${postId}`)
+            commentsContainer.insertAdjacentHTML('afterbegin',`
+                <div id=comment${ data.id }>
+                    <b>${ data.user } : </b>${ data.text } (${ moment(data.commeted_at).fromNow() } )
+                </div>
+            `)
+            form.reset()
+        })
+        .catch(error=>{
+            console.error(error)
+        })
+        .finally(res =>{
+            document.getElementById(`submitButton${postId}`).disabled = false
+        })
     }
 </script>
 {% endblock %}
