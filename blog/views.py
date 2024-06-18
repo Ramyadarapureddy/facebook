@@ -3,10 +3,10 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import PostSerializer
+from .serializers import PostSerializer, CommentSerializer
 
 from .forms import PostForm
-from .models import Post
+from .models import Post,Comment
 # Create your views here
 
 def home_page(request):
@@ -53,3 +53,18 @@ def update_like(request):
    post.save()
    serializer = PostSerializer(post)
    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@login_required
+def add_comment(request,post_id):
+   user = request.user
+   post = Post.objects.get(pk = post_id)
+   data = request.data
+   new_comment = Comment(user=user , post=post ,text= data.get('text'))
+   new_comment.save()
+
+   serializer = CommentSerializer(new_comment)
+   return Response(serializer.data,status=status.HTTP_201_CREATED)
+
+
