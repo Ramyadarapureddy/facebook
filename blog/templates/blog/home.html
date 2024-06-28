@@ -3,5 +3,53 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-<h1>HOME PAGE</h1>
+<div class="cta text-center" style="margin-top: 100px;">
+    <h3 class="display-4 ">Connect with Friends on Facebook</h3>
+    <p class="lead">Share moments, updates, and memories with the people</p>
+    <button class="btn btn-primary btn-lg">
+        <a href="{% url 'register-user' %}" style="text-decoration: none;" class="text-white fs-5">Sign Up for Free</a>
+    </button>
+</div>
+
+<div class="row" style="margin-top: 50px;">
+    <h3 class="text-center mb-4"><b>Key Features</b></h3>
+    <div class="col-4 text-center">
+        <i class="bi bi-chat-dots" style="font-size: 2rem;"></i>
+        <h3>Chat with Friends</h3>
+        <p>Stay connected with your friends through instant messaging.</p>
+    </div>
+    <div class="col-4  text-center">
+        <i class="bi bi-image" style="font-size: 2rem;"></i>
+        <h3>Share Photos</h3>
+        <p>Upload and share your favorite photos with your friends and family.</p>
+    </div>
+    <div class="col-4 text-center">
+        <i class="bi bi-person" style="font-size: 2rem;"></i>
+        <h3>Connect with People</h3>
+        <p>Discover and Connect with people from around the world.</p>
+    </div>
+</div>
+
+<div style="margin-top: 50px;">
+    <h3 class="text-center">Explore Facebook</h3>
+    <div class="row mb-3 text-center" style="margin-top: 30px; ">
+        <div class="col-md-4">
+            <img class="rounded mx-auto d-block" src="https://images.pexels.com/photos/3178798/pexels-photo-3178798.jpeg?auto=compress&cs=tinysrgb&w=600" alt="rain" width="250">
+        </div>
+        <div class="col-md-4">
+            <img class="rounded mx-auto d-block" src="https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="nature" width="250">
+        </div>
+        <div class="col-md-4">
+            <img class="rounded mx-auto d-block" src="https://images.pexels.com/photos/1802268/pexels-photo-1802268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="ocean" width="250">
+        </div>
+    </div>
+</div>
+
+<div class="text-center" style="margin-top: 100px;">
+    <h2>Join Facebook Today</h2>
+    <p class="fs-5">Connect with friends,share memories and explore a world of possibilites</p>
+    <button type="button" class="btn btn-primary btn-lg">
+        <a href="{% url 'register-user' %}" style="text-decoration: none;" class="text-white fs-5">Sign Up for Free</a>
+    </button>
+</div>
 {% endblock %}
