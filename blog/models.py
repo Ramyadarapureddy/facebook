@@ -5,7 +5,7 @@ from auth_manager.models import CustomUser
 
 class Post(models.Model):
     author = models.ForeignKey(CustomUser, 
-                               on_delete=models.CASCADE)
+                               on_delete=models.CASCADE, related_name='my_posts')
     title = models.TextField()
     image = models.ImageField(upload_to='posts/images/',
                               blank=True,null=True)
